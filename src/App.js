@@ -25,18 +25,18 @@ class App extends Component {
             ],
             word: '',
             letters: [],
+            keyPicked: [],
             missed: [],
             counted:'',
             missedCount: 0,
-            gameOver: false,
-            gameWon: false,
+
         }
     }
     fetchTheData() {
         axios.get('https://api.wordnik.com/v4/words.json/randomWord?api_key=2a7dcc53f5ba07ba1400d0ad85f06d10b660242c533b89e6b')
             .then(response=> {
                 this.setState({
-                    word:response.data.word
+                    word:response.data.word.toLowerCase()
                 });
             })
             .then(this.setLetters)
@@ -45,7 +45,10 @@ class App extends Component {
     componentDidMount(){
         this.fetchTheData();
         window.addEventListener('keydown',(event)=>{
+
             this.Check(event.key);
+
+
             console.log(event);
         });
 
@@ -71,11 +74,10 @@ class App extends Component {
             return {
                 word: '',
                 letters: [],
+                keyPicked: [],
                 missed: [],
                 counted:0,
                 missedCount: 0,
-                gameOver: false,
-                gameWon: false,
             };
         });
         this.fetchTheData();
@@ -89,8 +91,11 @@ class App extends Component {
                     missedCount: countMissed
                 });
             }
-            else if (this.state.word.includes(key) && !this.state.missed.includes(key)) {
+            else if ((this.state.word.includes(key) && !this.state.missed.includes(key)) && !this.state.keyPicked.includes(key)) {
                 var count = this.state.counted;
+                var tempArray = this.state.keyPicked.slice();
+                tempArray.push(key);
+                this.setState({keyPicked:tempArray});
                 const result = this.state.letters.map((letter) => {
                     if (letter.val === key) {
                         letter.isFound = true;
@@ -101,10 +106,11 @@ class App extends Component {
 
                 this.setState({
                     letters: result,
+                    lettersPicked:result.val,
                     counted:count
                 });
             }
-            else {
+            else if(!this.state.keyPicked.includes(key)){
                 let countMissed = this.state.missedCount;
                 countMissed++;
                 this.setState((currentState) => {
@@ -123,10 +129,10 @@ class App extends Component {
 
     render() {
         if(this.state.missedCount===11){
-            return <GameOver won={false} onClickReset={this.handleReset}/>
+            return <GameOver won={false} word={this.state.word} onClickReset={this.handleReset}/>
         }
-        else if(this.state.counted===0){
-            return <GameOver won={true} onClickReset={this.handleReset}/>
+        else if(this.state.counted<=0){
+            return <GameOver won={true} word={this.state.word} onClickReset={this.handleReset}/>
         }
         return (
             <div>
