@@ -33,7 +33,7 @@ class App extends Component {
         }
     }
     fetchTheData() {
-        axios.get('http://api.wordnik.com/v4/words.json/randomWord?api_key=2a7dcc53f5ba07ba1400d0ad85f06d10b660242c533b89e6b')
+        axios.get('https://api.wordnik.com/v4/words.json/randomWord?api_key=2a7dcc53f5ba07ba1400d0ad85f06d10b660242c533b89e6b')
             .then(response=> {
                 this.setState({
                     word:response.data.word
