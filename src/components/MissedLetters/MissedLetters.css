@@ -1,0 +1,35 @@
+.missed-letters {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    width: 50%;
+    font-size: 20px;
+    justify-content: flex-start;
+    color: #50524f;
+
+    z-index: 1;
+    top: 20px;
+    right: 5%;
+}
+
+.missed-letters span {
+    font-weight: 600;
+}
+
+.missed-letters-block {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+}
+
+.missed-letter {
+    font-size: 50px;
+    color: #516dfb;
+    display: flex;
+    text-transform: uppercase;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    margin: 2px;
+}
