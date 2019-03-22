@@ -26,7 +26,7 @@ class App extends Component {
             word: '',
             letters: [],
             missed: [],
-            counted:0,
+            counted:';,
             missedCount: 0,
             gameOver: false,
             gameWon: false,
