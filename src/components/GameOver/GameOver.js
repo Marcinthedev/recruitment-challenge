@@ -12,6 +12,7 @@ const GameOver = (props) =>{
             <div className={classes.GameOver}>
 
             <p>{result}</p>
+                <h5>Word you were looking for is {props.word} </h5>
             <p><button onClick={props.onClickReset}>Reset</button></p></div>
         )
     }
