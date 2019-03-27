@@ -29,6 +29,8 @@ class App extends Component {
             missed: [],
             counted:'',
             missedCount: 0,
+            gameWon:false,
+            gameLose:false,
 
         }
     }
@@ -76,62 +78,81 @@ class App extends Component {
                 letters: [],
                 keyPicked: [],
                 missed: [],
-                counted:0,
+                counted:'',
                 missedCount: 0,
+                gameWon:false,
+                gameLose:false,
+
             };
         });
         this.fetchTheData();
     };
     Check = (key) => {
 
-            if (this.state.missed.includes(key)) {
-                let countMissed = this.state.missedCount;
-                countMissed++;
-                this.setState({
+        if (this.state.missed.includes(key)) {
+            let countMissed = this.state.missedCount;
+            countMissed++;
+            this.setState({
+                missedCount: countMissed
+            });
+        }
+        else if ((this.state.word.includes(key) && !this.state.missed.includes(key)) && !this.state.keyPicked.includes(key)) {
+            var count = this.state.counted;
+            var tempArray = this.state.keyPicked.slice();
+            tempArray.push(key);
+            this.setState({keyPicked:tempArray});
+            const result = this.state.letters.map((letter) => {
+                if (letter.val === key) {
+                    letter.isFound = true;
+                    count--;
+                }
+                return letter;
+            });
+
+            this.setState({
+                letters: result,
+                lettersPicked:result.val,
+                counted:count
+            });
+        }
+        else if(!this.state.keyPicked.includes(key)){
+            let countMissed = this.state.missedCount;
+            countMissed++;
+            this.setState((currentState) => {
+                return {
+                    missed: currentState.missed.concat([
+                        key,
+                    ]),
                     missedCount: countMissed
-                });
-            }
-            else if ((this.state.word.includes(key) && !this.state.missed.includes(key)) && !this.state.keyPicked.includes(key)) {
-                var count = this.state.counted;
-                var tempArray = this.state.keyPicked.slice();
-                tempArray.push(key);
-                this.setState({keyPicked:tempArray});
-                const result = this.state.letters.map((letter) => {
-                    if (letter.val === key) {
-                        letter.isFound = true;
-                        count--;
-                    }
-                    return letter;
-                });
 
-                this.setState({
-                    letters: result,
-                    lettersPicked:result.val,
-                    counted:count
-                });
-            }
-            else if(!this.state.keyPicked.includes(key)){
-                let countMissed = this.state.missedCount;
-                countMissed++;
-                this.setState((currentState) => {
-                    return {
-                        missed: currentState.missed.concat([
-                            key,
-                        ]),
-                        missedCount: countMissed
-
-                    }
-                })
+                }
+            })
 
 
         }
+        this.CheckIfWon();
+
+    };
+    CheckIfWon=()=>{
+        if(this.state.missedCount===11){
+            this.setState({
+                gameLose:true
+            });
+            // this.state.gameLose=true;
+        }
+        else if(this.state.counted<=0) {
+            this.setState({
+                gameWon:true
+            });
+        }
+
     };
 
     render() {
-        if(this.state.missedCount===11){
+        if(this.state.gameLose===true){
             return <GameOver won={false} word={this.state.word} onClickReset={this.handleReset}/>
         }
-        else if(this.state.counted<=0){
+        else if(this.state.gameWon===true){
             return <GameOver won={true} word={this.state.word} onClickReset={this.handleReset}/>
         }
         return (
