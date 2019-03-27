@@ -44,7 +44,8 @@ class App extends Component {
             .then(this.setLetters)
             .catch((err)=> {
                 console.log('Error',err);
-                alert('I am sorry. Api does not respond');
+                alert('I am sorry. Api does not respond. You have send too many requests :)');
+
 
             });
     }
