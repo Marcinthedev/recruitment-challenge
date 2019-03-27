@@ -42,7 +42,11 @@ class App extends Component {
                 });
             })
             .then(this.setLetters)
-            .catch((err)=> console.log('Error',err));
+            .catch((err)=> {
+                console.log('Error',err);
+                alert('I am sorry. Api does not respond');
+
+            });
     }
     componentDidMount(){
         this.fetchTheData();
